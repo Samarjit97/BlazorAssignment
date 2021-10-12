@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorAssignment", "BlazorAssignment\BlazorAssignment.csproj", "{DAC2C493-5E4E-48C5-AFF0-A6E35F9854AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAC2C493-5E4E-48C5-AFF0-A6E35F9854AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAC2C493-5E4E-48C5-AFF0-A6E35F9854AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAC2C493-5E4E-48C5-AFF0-A6E35F9854AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAC2C493-5E4E-48C5-AFF0-A6E35F9854AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

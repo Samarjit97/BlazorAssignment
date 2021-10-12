@@ -1,0 +1,136 @@
+﻿@page "/adults"
+@using BlazorAssignment.Models
+@using System.IO
+@using System.Text.Json
+@using BlazorAssignment.Data
+@inject NavigationManager NavMgr
+
+
+
+<h3>Adults</h3>
+<p>
+    Filter by User Id: <input type="number" @oninput="@((arg) => Filter(arg))" style="width:50px"/>
+</p>
+<p>
+    Filter By Eye Color: <input type="text" @oninput="@((txt) => FilterByEyeColor(txt))" style="width:50px"/>
+</p>
+
+@if (_adultsToShow == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>HairColor</th>
+            <th>EyeColor</th>
+            <th>Age</th>
+            <th>Weight</th>
+            <th>Height</th>
+            <th>Sex</th>
+            <th>JobTitle</th>
+          
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var adults in _adultsToShow)
+        {
+            <tr>
+                <td>@adults.Id</td>
+                <td>@adults.FirstName</td>
+                <td>@adults.LastName</td>
+                <td>@adults.HairColor</td>
+                <td>@adults.EyeColor</td>
+                <td>@adults.Age</td>
+                <td>@adults.Weight</td>
+                <td>@adults.Height</td>
+                <td>@adults.Sex</td>
+                <td>@adults.JobTitle</td>
+                <td>  <button @onclick="@(() => Edit(adults.Id))">
+                                        <i class="oi oi-pencil" style="color:#1b6ec2"/>
+                                        </button></td>
+                  
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+@code {
+    private IList<Adult> _adultList;
+    private AdultsService _adultsService;
+    private IList<Adult> _adultsToShow;
+    
+    private int? filterById;
+    private string? filterByEyeColor;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _adultsService = new AdultsService();
+        
+        _adultList =  _adultsService.ReadData<Adult>();
+        _adultsToShow = _adultList; //   "adults.json"
+    }
+    
+    private void FilterByUserId(ChangeEventArgs changeEventArgs)
+    {
+        filterById = null;
+        try
+        {
+            filterById = int.Parse(changeEventArgs.Value.ToString());
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+    
+    private void Edit(int id)
+    {
+        NavMgr.NavigateTo($"Edit/{id}");
+    }
+    
+    private void FilterByEyeColor(ChangeEventArgs args)
+    {
+        filterByEyeColor = null;
+        try
+        {
+            filterByEyeColor = args.Value.ToString();
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+    private void ExecuteFilter()
+    {
+        _adultsToShow = _adultList.Where(a =>
+            (filterById != null && a.Id == filterById || filterById == null)
+            && filterByEyeColor!= null && a.EyeColor == filterByEyeColor || filterByEyeColor== null).ToList();
+    }
+    private void Filter(ChangeEventArgs changeEventArgs)
+    {
+        int? filterById = null;
+        try
+        {
+            filterById = int.Parse(changeEventArgs.Value.ToString());
+        }
+        catch (Exception e)
+        {
+        }
+        if (filterById != null)
+        {
+            _adultsToShow = _adultList.Where(a => a.Id == filterById).ToList();
+        }
+        else
+        {
+            _adultsToShow = _adultList;
+        }
+    }
+}

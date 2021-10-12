@@ -1,0 +1,97 @@
+﻿@page "/SearchAdults"
+@using BlazorAssignment.Data
+@using BlazorAssignment.Models
+
+<h1>SearchAdults</h1>
+<h4>Search By First Name</h4>
+<input @bind-value="SearchTermForFirstName" @bind-value:event="oninput" />
+<p><button class="btn1"  @onclick="@(e=> SearchByFirstName())">Search</button> </p>
+
+<h4>Search By Last Name</h4>
+
+<input @bind-value="SearchTermForLastName" @bind-value:event="oninput" />
+<p><button class="btn1"  @onclick="@(e=> SearchByLastName())">Search </button> </p>
+
+<h4>Search By Sex</h4>
+
+<input @bind-value="SearchTermForSex " @bind-value:event="oninput" />
+<p><button class="btn1" @onclick="@(e=> SearchBySex())">Search </button> </p>
+
+@if (_searchedList == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>HairColor</th>
+            <th>EyeColor</th>
+            <th>Age</th>
+            <th>Weight</th>
+            <th>Height</th>
+            <th>Sex</th>
+            <th>JobTitle</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var adults in _searchedList)
+        {
+            <tr>
+                <td>@adults.Id</td>
+                <td>@adults.FirstName</td>
+                <td>@adults.LastName</td>
+                <td>@adults.HairColor</td>
+                <td>@adults.EyeColor</td>
+                <td>@adults.Age</td>
+                <td>@adults.Weight</td>
+                <td>@adults.Height</td>
+                <td>@adults.Sex</td>
+                <td>@adults.JobTitle</td>
+
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    
+    private IList<Adult> _adultList;
+    private AdultsService _adultsService;
+    private IList<Adult> _searchedList;
+    
+    private string SearchTermForFirstName { get; set; } = "";
+    private string SearchTermForLastName { get; set; } = "";
+    private string SearchTermForSex { get; set; } = "";
+
+    private void SearchByFirstName() {
+        
+        _searchedList =  _adultList.Where(a => a.FirstName.Contains(SearchTermForFirstName)).ToList();
+    }
+    private void SearchByLastName() {
+        
+        _searchedList =  _adultList.Where(a => a.LastName.Contains(SearchTermForLastName)).ToList();
+    }
+
+    private void SearchBySex()
+    {
+        _searchedList =  _adultList.Where(a => a.Sex.Contains(SearchTermForSex.ToUpper() )).ToList();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        _adultsService = new AdultsService();
+        
+        _adultList =  _adultsService.ReadData<Adult>(); //   "adults.json"
+    }
+    
+  
+  
+}

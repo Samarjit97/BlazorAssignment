@@ -1,0 +1,79 @@
+﻿@page "/Edit/{Id:int}"
+@using BlazorAssignment.Data
+@using BlazorAssignment.Models
+@inject NavigationManager NavMgr
+@inject IAdultsService AdultsService
+<h3>Edit Adult with id: @Id</h3>
+@if (adultToEdit == null)
+{
+    <em>Adult not found!</em>
+}
+
+else
+{
+    <EditForm Model="@adultToEdit" OnValidSubmit="@Save">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        <div class="form-group">
+            Adult Id:<br/>
+            <InputNumber @bind-Value="adultToEdit.Id"/>
+        </div>
+        <div class="form-group">
+            FirstName:<br/>
+            <InputTextArea rows="4" @bind-Value="adultToEdit.FirstName"/>
+        </div>
+        <div class="form-group">
+            LastName:<br/>
+            <InputTextArea rows="4" @bind-Value="adultToEdit.LastName"/>
+        </div>
+        <div class="form-group">
+            HairColor:<br/>
+            <InputTextArea rows="4" @bind-Value="adultToEdit.HairColor"/>
+        </div>
+        <div class="form-group">
+            EyeColor:<br/>
+            <InputTextArea rows="4" @bind-Value="adultToEdit.EyeColor"/>
+        </div>
+        <div class="form-group">
+            Age:<br/>
+            <InputNumber rows="4" @bind-Value="adultToEdit.Age"/>
+        </div>
+        <div class="form-group">
+            Weight:<br/>
+            <InputNumber rows="4" @bind-Value="adultToEdit.Weight"/>
+        </div>
+         <div class="form-group">
+                    Height:<br/>
+                    <InputNumber rows="4" @bind-Value="adultToEdit.Height"/>
+                </div>
+        <div class="form-group">
+            Sex:<br/>
+            <InputTextArea rows="4" @bind-Value="adultToEdit.Sex"/>
+        </div>
+        
+        <p class="actions">
+            <button class="btn btn-outline-dark" type="submit">Save</button>
+        </p>
+    </EditForm>
+}
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private Adult adultToEdit;
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        adultToEdit =  AdultsService.Get(Id);
+    }
+
+    private void Save()
+    {
+        AdultsService.updateAdult(adultToEdit);
+        NavMgr.NavigateTo("/Adults");
+    }
+
+}

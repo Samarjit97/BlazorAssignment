@@ -1,0 +1,51 @@
+﻿@page "/ChartsAdultInfo"
+@using Syncfusion.Blazor.HeatMap.Internal
+@using BlazorAssignment.Models
+@using BlazorAssignment.Data
+<SfChart Title="Age difference Chart">
+    <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category" Title ="FirstName">
+    </ChartPrimaryXAxis>
+    <ChartPrimaryYAxis Title ="Age">
+    </ChartPrimaryYAxis>
+    <ChartLegendSettings Visible="true"></ChartLegendSettings>
+    <ChartTooltipSettings Enable="true"></ChartTooltipSettings>
+    <ChartSeriesCollection>
+        <ChartSeries Type="ChartSeriesType.Column" DataSource="@_adultList"
+                     XName="FirstName" YName="Age" Name="AgeChart">
+            <ChartMarker>
+                <ChartDataLabel Visible="true"></ChartDataLabel>
+            </ChartMarker>
+        </ChartSeries>
+    </ChartSeriesCollection>
+</SfChart>
+
+<div class="row">
+    <div class="col-md-6">
+        <RadzenChart>
+            <RadzenPieSeries Data="@_adultList" Title="TotalAdultsWithThisColor" CategoryProperty="EyeColor"
+                             ValueProperty="Id">
+                
+            </RadzenPieSeries>
+        </RadzenChart>
+    </div>
+</div>
+@code
+{
+
+    private IList<Adult> _adultList;
+    private AdultsService _adultsService;
+    private List<Adult> _adultListForPieChart;
+   
+
+    protected override async Task OnInitializedAsync()
+    {
+        _adultsService = new AdultsService();
+
+        _adultList = _adultsService.ReadData<Adult>(); //   "adults.json"
+
+        _adultListForPieChart = (List<Adult>) _adultsService.ReadData<Adult>();
+    }
+
+   
+    
+}

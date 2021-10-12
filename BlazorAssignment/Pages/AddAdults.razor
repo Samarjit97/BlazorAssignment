@@ -1,0 +1,67 @@
+﻿@page "/AddAdults"
+@attribute [Authorize(Policy = "MustBeAdult")]
+@using BlazorAssignment.Models
+@using BlazorAssignment.Data
+@inject IAdultsService AdultsService
+@inject NavigationManager NavigationManager
+
+
+
+<EditForm Model="@newAdult" OnValidSubmit="@AddNewAdult">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <div class="form-group">
+        User Id:<br/>
+        <InputNumber @bind-Value="newAdult.Id"/>
+    </div>
+    <div class="form-group">
+        FirstName:<br/>
+        <InputTextArea @bind-Value="newAdult.FirstName"/>
+    </div>
+    <div class="form-group">
+        LastName:<br/>
+        <InputTextArea rows="4" @bind-Value="newAdult.LastName"/>
+    </div>
+    <div class="form-group">
+        HairColor:<br/>
+        <InputTextArea rows="4" @bind-Value="newAdult.HairColor"/>
+    </div>
+    <div class="form-group">
+        EyeColor:<br/>
+        <InputTextArea rows="4" @bind-Value="newAdult.EyeColor"/>
+    </div>
+    <div class="form-group">
+        Age:<br/>
+        <InputNumber rows="4" @bind-Value="newAdult.Age"/>
+    </div>
+    <div class="form-group">
+        Weight:<br/>
+        <InputNumber rows="4" @bind-Value="newAdult.Weight"/>
+    </div>
+    <div class="form-group">
+        Height:<br/>
+        <InputNumber rows="4" @bind-Value="newAdult.Height"/>
+    </div>
+    <div class="form-group">
+        Sex:<br/>
+        <InputTextArea rows="4" @bind-Value="newAdult.Sex"/>
+    </div>
+     
+    
+    <p class="actions">
+        <button class="btn btn-outline-dark" type="submit">Create</button>
+    </p>
+</EditForm>
+
+
+@code {
+    private Adult newAdult = new Adult();
+    
+    
+    private void AddNewAdult()
+    {
+        AdultsService.addAdult(newAdult);
+        NavigationManager.NavigateTo("/Adults");
+    }
+
+}
